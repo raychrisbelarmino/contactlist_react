@@ -7,13 +7,17 @@ class App extends Component{
     super();
     this.state = {
       data: [],
-      hidePopUp: true
+      hidePopUp: true,
+      operation: 0,
     }
     this.popUpActs = this.popUpActs.bind(this);
   }
 
-  popUpActs(action){
-    
+  popUpActs(val, action = 0){//1-add,2-edit
+    this.setState({
+      hidePopUp: val,
+      operation: action
+    })
   }
 
 
@@ -57,7 +61,7 @@ class App extends Component{
                 {
                   this.state.data.map((item)=>{
                     return(
-                    <tr>
+                    <tr key={item.id}>
                       <td>{item.id}</td>
                       <td>{item.lastName}</td>
                       <td>{item.firstName}</td>
@@ -73,10 +77,11 @@ class App extends Component{
               </tbody>
             </table>
             <br/>
-            <button style={{float: 'right', fontSize: '16px'}} onClick={this.popUpActs(1)}>ADD CONTACT</button>
+            <button style={{float: 'right', fontSize: '16px'}} onClick={()=>this.popUpActs(false, 1)}>ADD CONTACT</button>
+            <br/><br/>
         </div>
         <div hidden={this.state.hidePopUp} id="addContactPopup" style={{width: '100%', height: '100vh', position: 'absolute'}}>
-          <PopUp/>
+          <PopUp popUpActs={this.popUpActs}/>
         </div>
 
       </div>

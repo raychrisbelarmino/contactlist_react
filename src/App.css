@@ -44,6 +44,8 @@
 .inputFields{
   width: 75%;
   margin-bottom: 10px;
+  background-color: white;
+  color: black
 }
 #transparentGrayBG{
   position: absolute; 
