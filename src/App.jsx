@@ -1,13 +1,21 @@
 import './App.css'
 import React, {Component} from 'react'
+import PopUp from './components/PopUp.jsx';
 
 class App extends Component{
   constructor(){
     super();
     this.state = {
-      data:[]
+      data: [],
+      hidePopUp: true
     }
+    this.popUpActs = this.popUpActs.bind(this);
   }
+
+  popUpActs(action){
+    
+  }
+
 
   componentDidMount(){
     var self = this;
@@ -31,8 +39,8 @@ class App extends Component{
 
   render(){
     return(
-      <div>
-        <div id="contactList">
+      <div style={{position: 'relative', width: '100%'}}>
+        <div id="contactList" style={{width: '100%', position: 'absolute'}}>
             <center><h1>Contact List</h1></center>
             <table id="contactTable" border="1" style={{width: '100%', border: '1px solid black'}}>
               <thead>
@@ -65,8 +73,12 @@ class App extends Component{
               </tbody>
             </table>
             <br/>
-            <button style={{float: 'right', fontSize: '16px'}}>ADD CONTACT</button>
+            <button style={{float: 'right', fontSize: '16px'}} onClick={this.popUpActs(1)}>ADD CONTACT</button>
         </div>
+        <div hidden={this.state.hidePopUp} id="addContactPopup" style={{width: '100%', height: '100vh', position: 'absolute'}}>
+          <PopUp/>
+        </div>
+
       </div>
     );
   }
