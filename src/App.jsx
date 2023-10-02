@@ -24,7 +24,7 @@ class App extends Component{
   }
 
   submitContact(lname, fname, emailAdd, contactNum){
-    console.log(lname+":"+fname+":"+emailAdd+":"+contactNum);
+    var self = this;
     this.popUpActs(true);
     const obj = {
       lname,
@@ -33,18 +33,31 @@ class App extends Component{
       contactNum
     }
     let data = new URLSearchParams(obj).toString();
-    console.log(data);
     //jquery needed
     $.ajax({
       type : 'POST',
-      //url : 'https://contlist.000webhostapp.com/add.php',
-      url : 'http://localhost/ContactListBackendPHP/add.php',
+      url : 'https://contlist.000webhostapp.com/add.php',
+      //url : 'http://localhost/ContactListBackendPHP/add.php',
       data : data,
       success : function(response) {
         var res = JSON.parse(response);
         alert(res["message"]);
         if(res["status"] == 200 && res["data"] != -1){
-            alert("asdf")
+          const newObj = {
+            id: res["data"],
+            lastName: lname,
+            firstName: fname,
+            email: emailAdd,
+            number: contactNum
+          }
+          var arr = self.state.data;
+          arr.push(newObj);
+
+          //sort according to last name
+
+          self.setState({
+            data: arr
+          })
         }
       }
     });
@@ -54,8 +67,8 @@ class App extends Component{
     var self = this;
     var contactsData;
     var xhttp = new XMLHttpRequest();
-    //xhttp.open("GET", "https://contlist.000webhostapp.com/read.php", true);
-    xhttp.open("GET", "http://localhost/ContactListBackendPHP/read.php", true);
+    xhttp.open("GET", "https://contlist.000webhostapp.com/read.php", true);
+    //xhttp.open("GET", "http://localhost/ContactListBackendPHP/read.php", true);
     xhttp.send();
     xhttp.onreadystatechange = function(){
       if(this.readyState == 4 && this.status == 200){
