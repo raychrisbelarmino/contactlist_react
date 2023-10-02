@@ -1,6 +1,7 @@
 import './App.css'
 import React, {Component} from 'react'
 import PopUp from './components/PopUp.jsx';
+import $ from 'jquery';
 
 class App extends Component{
   constructor(){
@@ -9,8 +10,10 @@ class App extends Component{
       data: [],
       hidePopUp: true,
       operation: 0,
+      contact: {}
     }
     this.popUpActs = this.popUpActs.bind(this);
+    this.submitContact = this.submitContact.bind(this);
   }
 
   popUpActs(val, action = 0){//1-add,2-edit
@@ -20,12 +23,39 @@ class App extends Component{
     })
   }
 
+  submitContact(lname, fname, emailAdd, contactNum){
+    console.log(lname+":"+fname+":"+emailAdd+":"+contactNum);
+    this.popUpActs(true);
+    const obj = {
+      lname,
+      fname,
+      emailAdd,
+      contactNum
+    }
+    let data = new URLSearchParams(obj).toString();
+    console.log(data);
+    //jquery needed
+    $.ajax({
+      type : 'POST',
+      //url : 'https://contlist.000webhostapp.com/add.php',
+      url : 'http://localhost/ContactListBackendPHP/add.php',
+      data : data,
+      success : function(response) {
+        var res = JSON.parse(response);
+        alert(res["message"]);
+        if(res["status"] == 200 && res["data"] != -1){
+            alert("asdf")
+        }
+      }
+    });
+  }
 
   componentDidMount(){
     var self = this;
     var contactsData;
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://doited-error.000webhostapp.com/read.php", true);
+    //xhttp.open("GET", "https://contlist.000webhostapp.com/read.php", true);
+    xhttp.open("GET", "http://localhost/ContactListBackendPHP/read.php", true);
     xhttp.send();
     xhttp.onreadystatechange = function(){
       if(this.readyState == 4 && this.status == 200){
@@ -43,7 +73,7 @@ class App extends Component{
 
   render(){
     return(
-      <div style={{position: 'relative', width: '100%'}}>
+      <div style={{position: 'relative', width: '100%', height: '100vh'}}>
         <div id="contactList" style={{width: '100%', position: 'absolute'}}>
             <center><h1>Contact List</h1></center>
             <table id="contactTable" border="1" style={{width: '100%', border: '1px solid black'}}>
@@ -81,7 +111,7 @@ class App extends Component{
             <br/><br/>
         </div>
         <div hidden={this.state.hidePopUp} id="addContactPopup" style={{width: '100%', height: '100vh', position: 'absolute'}}>
-          <PopUp popUpActs={this.popUpActs}/>
+          <PopUp popUpActs={this.popUpActs} submitContact={this.submitContact}/>
         </div>
 
       </div>
