@@ -5,7 +5,6 @@ class PopUp extends Component{
     constructor(){
         super();
         this.state = {
-            operation: 0,
             lname: '',
             fname: '',
             emailAdd: '',
@@ -41,6 +40,12 @@ class PopUp extends Component{
 
     formSubmitted(e){
         this.props.submitContact(this.state.lname, this.state.fname, this.state.emailAdd, this.state.contactNum);
+        this.setState({
+            lname: '',
+            fname: '',
+            emailAdd: '',
+            contactNum: ''
+        })
         e.preventDefault();
     }
 
