@@ -14,6 +14,7 @@ class App extends Component{
     }
     this.popUpActs = this.popUpActs.bind(this);
     this.submitContact = this.submitContact.bind(this);
+    this.deleteContact = this.deleteContact.bind(this);
   }
 
   popUpActs(val, action = 0){//1-add,2-edit
@@ -21,6 +22,36 @@ class App extends Component{
       hidePopUp: val,
       operation: action
     })
+  }
+
+  deleteContact(id){
+    if (confirm('Are you sure you want to delete this contact?')) {
+      var self = this;
+      $.ajax({
+        type : 'POST',
+        url : 'https://contlist.000webhostapp.com/delete.php',
+        //url : 'http://localhost/ContactListBackendPHP/add.php',
+        data : "id="+id,
+        success : function(response) {
+          var res = JSON.parse(response);
+          alert(res["message"]);
+          if(res["status"] == 200){
+            var arr = self.state.data;
+            const itemToRemoveIndex = arr.findIndex(function(item) {
+              return item.id === id;
+            });
+            if(itemToRemoveIndex !== -1){
+              arr.splice(itemToRemoveIndex, 1);
+            }
+            self.setState({
+              data: arr
+            })
+          }
+        }
+      });
+    } else {
+      // Do nothing!
+    }
   }
 
   submitContact(lname, fname, emailAdd, contactNum){
@@ -112,7 +143,7 @@ class App extends Component{
                       <td>{item.number}</td>
                       <td>
                         <button style={{backgroundColor: 'green'}} className='actionButtons'>EDIT</button>
-                        <button style={{backgroundColor: 'red'}} className='actionButtons'>DELETE</button>
+                        <button style={{backgroundColor: 'red'}} className='actionButtons' onClick={()=>this.deleteContact(item.id)}>DELETE</button>
                       </td>
                     </tr>);
                   })
