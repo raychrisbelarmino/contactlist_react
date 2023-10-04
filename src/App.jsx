@@ -29,8 +29,8 @@ class App extends Component{
       var self = this;
       $.ajax({
         type : 'POST',
-        url : 'https://contlist.000webhostapp.com/delete.php',
-        //url : 'http://localhost/ContactListBackendPHP/add.php',
+        url : 'https://todolist-sample.000webhostapp.com/delete.php',
+        //url : 'http://localhost/ContactListBackendPHP/delete.php',
         data : "id="+id,
         success : function(response) {
           var res = JSON.parse(response);
@@ -67,7 +67,7 @@ class App extends Component{
     //jquery needed
     $.ajax({
       type : 'POST',
-      url : 'https://contlist.000webhostapp.com/add.php',
+      url : 'https://todolist-sample.000webhostapp.com/add.php',
       //url : 'http://localhost/ContactListBackendPHP/add.php',
       data : data,
       success : function(response) {
@@ -98,7 +98,7 @@ class App extends Component{
     var self = this;
     var contactsData;
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "https://contlist.000webhostapp.com/read.php", true);
+    xhttp.open("GET", "https://todolist-sample.000webhostapp.com/read.php", true);
     //xhttp.open("GET", "http://localhost/ContactListBackendPHP/read.php", true);
     xhttp.send();
     xhttp.onreadystatechange = function(){
